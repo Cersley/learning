@@ -1,0 +1,49 @@
+@startuml
+
+object USER {
+  id,
+  email
+  password
+  nickname
+  statusInGame
+
+  profile: PROFILE
+
+  topics: [ TOPIC ]
+}
+
+USER <|-- PROFILE
+USER o-- TOPIC
+
+object PROFILE {
+  id: USER
+  avatar
+  level
+  name
+  dateOfBirth
+}
+
+object TOPIC {
+  id
+  category
+  messages: [ MESSAGE ]
+}
+
+TOPIC o-- MESSAGE
+
+object MESSAGE {
+  id
+  data: {}
+  from: USER
+  to: USER
+  date
+}
+
+object REPLIES {
+  id
+  message: MESSAGE
+  from: USER
+  to: USER
+}
+
+@enduml
