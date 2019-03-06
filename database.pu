@@ -1,49 +1,126 @@
 @startuml
 
-object USER {
-  id,
-  email
-  password
-  nickname
-  statusInGame
+namespace USER {
+  object USER {
+    id
+    email
+    password
+    nickname
+    createdAt
 
-  profile: PROFILE
+    profile: PROFILE
+  }
 
-  topics: [ TOPIC ]
+  object PROFILE {
+    id: USER
+    avatar /' url '/
+    name
+    dateOfBirth
+  }
+
+  object STATUS {
+    userId: USER
+    status
+  }
 }
 
-USER <|-- PROFILE
-USER o-- TOPIC
+namespace GAME {
+  object PLAYER {
+    id
+    userId: USER
+    level
+    race
+    items: [ ITEM ] /' in game items '/
+    achievements: [ ACHIEVEMENT ]
+  }
 
-object PROFILE {
-  id: USER
-  avatar
-  level
-  name
-  dateOfBirth
+  object ITEM {
+    id
+    image /' url '/
+    name
+  }
+
+  object ACHIEVEMENT {
+    id
+    image /' url '/
+    name
+  }
+
+  object CLAN {
+    id
+    name
+    leader: PLAYER
+    boardOnForum: BOARD
+  }
+
+  object EVENT {
+    id
+    type
+    data: ''
+  }
+  
+  object SIGNAL {
+    id
+    name
+  }
+
 }
 
-object TOPIC {
-  id
-  category
-  messages: [ MESSAGE ]
+namespace FORUM {
+  object CATEGORY {
+    id
+    name
+  }
+
+  object BOARD {
+    id
+    title,
+    category: CATEGORY
+  }
+
+  object SUBJECT {
+    id
+    board: BOARD
+    title,
+    asChannel
+    fixed /' featured '/
+    createdBy: USER
+    mode /' readonly | normal '/
+    createdAt
+  }
+
+  object POST {
+    id
+    subject: SUBJECT
+    url /' link to the post '/
+    body: {} /' internal '/
+    createdAt
+    author: USER
+    likes: /' count '/
+    usersWhoLiked: [ USER ]
+  }
+
+  object REPLY {
+    id
+    parentId
+    message: POST
+  }
 }
 
-TOPIC o-- MESSAGE
+namespace MESSENGER {
+  object CHANNEL {
+    id
+    name
+    subjectId: SUBJECT
+  }
 
-object MESSAGE {
-  id
-  data: {}
-  from: USER
-  to: USER
-  date
-}
-
-object REPLIES {
-  id
-  message: MESSAGE
-  from: USER
-  to: USER
+  object MESSAGE {
+    id
+    data: {} /' internal '/
+    author: PLAYER
+    to: USER|SUBJECT|CHANNEL
+    createdAt
+  }
 }
 
 @enduml

@@ -1,0 +1,25 @@
+@startuml
+
+component Game
+database game_db
+[Game] <-- [game_db]
+
+component Forum
+database forum_db
+[Forum] <-- [forum_db]
+
+node signal_layer
+note top of [signal_layer]
+  some events in game
+  that have to be presented 
+  in forum e.g. achievements
+end note
+
+[Game] --> [signal_layer]
+[signal_layer] --> [Forum]
+
+node messenger
+[messenger] <<-->> [Game]
+[messenger] <<-->> [Forum]
+
+@enduml
