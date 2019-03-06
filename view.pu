@@ -8,6 +8,10 @@ component Forum
 database forum_db
 [Forum] <-- [forum_db]
 
+node messenger
+[messenger] o-->> [Game]
+[messenger] <<-->> [Forum]
+
 node signal_layer
 note top of [signal_layer]
   some events in game
@@ -16,10 +20,6 @@ note top of [signal_layer]
 end note
 
 [Game] --> [signal_layer]
-[signal_layer] --> [Forum]
-
-node messenger
-[messenger] <<-->> [Game]
-[messenger] <<-->> [Forum]
+[signal_layer] o--> [Forum]
 
 @enduml

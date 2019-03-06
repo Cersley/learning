@@ -52,18 +52,12 @@ namespace GAME {
     leader: PLAYER
     boardOnForum: BOARD
   }
-
-  object EVENT {
-    id
-    type
-    data: ''
-  }
   
-  object SIGNAL {
-    id
-    name
+  object SIGNAL { /' send_signal '/
+    player: PLAYER
+    createdAt
+    data: {}
   }
-
 }
 
 namespace FORUM {
@@ -80,9 +74,9 @@ namespace FORUM {
 
   object SUBJECT {
     id
+    channel: CHANNEL
     board: BOARD
     title,
-    asChannel
     fixed /' featured '/
     createdBy: USER
     mode /' readonly | normal '/
@@ -100,6 +94,12 @@ namespace FORUM {
     usersWhoLiked: [ USER ]
   }
 
+  object NOTIFICATION {
+    id
+    from
+    
+  }
+
   object REPLY {
     id
     parentId
@@ -110,15 +110,16 @@ namespace FORUM {
 namespace MESSENGER {
   object CHANNEL {
     id
-    name
+    title, /' subject title '/
     subjectId: SUBJECT
   }
 
   object MESSAGE {
     id
-    data: {} /' internal '/
+    parentId: MESSAGE
     author: PLAYER
-    to: USER|SUBJECT|CHANNEL
+    to: USER|CHANNEL
+    data: {} /' text|img|like|emojy '/
     createdAt
   }
 }
